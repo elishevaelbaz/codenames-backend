@@ -15,6 +15,13 @@ class GamesController < ApplicationController
         render json: @game
     end
 
+    def update
+        @game = Game.find(params[:id])
+        @game.update(game_params)
+
+        render json: @game
+    end
+
     def code_lookup
       @game = Game.find_by(room_code: params[:room_code])
 
@@ -24,6 +31,6 @@ class GamesController < ApplicationController
     private
 
     def game_params
-        params.permit(:room_code, :id, :turn, :orange_words_left, :purple_words_left)
+        params.permit(:room_code, :id, :orange_turn, :orange_words_left, :purple_words_left)
     end
 end
