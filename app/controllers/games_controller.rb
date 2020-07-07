@@ -14,6 +14,12 @@ class GamesController < ApplicationController
         render json: @game
     end
 
+    def code_lookup
+      @game = Game.find_by(room_code: params[:room_code])
+
+      render json: @game
+    end
+
     private
 
     def game_params

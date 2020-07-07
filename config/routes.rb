@@ -4,4 +4,7 @@ Rails.application.routes.draw do
   resources :games, only: [:index, :create]
   resources :game_words, only: [:index]
 
+
+  get '/games/:room_code', to: 'games#code_lookup', as: 'code_lookup'
+  
 end
