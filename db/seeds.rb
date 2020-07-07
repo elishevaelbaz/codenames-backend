@@ -8,6 +8,10 @@ require 'faker'
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Word.destroy_all
+Game.destroy_all
+GameWord.destroy_all
+
 100.times do 
     Word.create(name: Faker::Creature::Animal.name)
 end
