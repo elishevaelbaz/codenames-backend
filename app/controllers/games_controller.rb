@@ -8,8 +8,9 @@ class GamesController < ApplicationController
     def create
         @game = Game.create(game_params)
         @words = Word.limit(25).order("RANDOM()")
-        @words.each do |word|
-            GameWord.create(game_id: @game.id, word_id: word.id, category: "test", guessed: false)
+        categories = ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "bomb", "neutral", "neutral", "neutral", "neutral", "neutral", "neutral", "neutral"].shuffle
+        @words.each_with_index do |word, index|
+            GameWord.create(game_id: @game.id, word_id: word.id, category: categories[index], guessed: false)
         end
         render json: @game
     end
@@ -23,6 +24,6 @@ class GamesController < ApplicationController
     private
 
     def game_params
-        params.permit(:room_code, :id)
+        params.permit(:room_code, :id, :turn, :orange_words_left, :purple_words_left)
     end
 end

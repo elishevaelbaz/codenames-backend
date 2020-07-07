@@ -23,6 +23,9 @@ ActiveRecord::Schema.define(version: 2020_07_06_191001) do
 
   create_table "games", force: :cascade do |t|
     t.string "room_code"
+    t.string "turn"
+    t.integer "orange_words_left"
+    t.integer "purple_words_left"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
