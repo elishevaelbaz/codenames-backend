@@ -13,7 +13,7 @@ Game.destroy_all
 GameWord.destroy_all
 
 100.times do 
-    Word.create(name: Faker::Creature::Animal.name)
+    Word.create(name: Faker::Creature::Animal.unique.name)
 end
 
 g1 = Game.create(room_code: "ABCD")
