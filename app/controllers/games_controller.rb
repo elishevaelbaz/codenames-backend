@@ -7,6 +7,14 @@ class GamesController < ApplicationController
 
     def create
         @game = Game.create(game_params)
+
+        if @game.save
+            game_room = Game.find(@game.id)
+            GameRoomChannel.broadcast_to(game_room, @game)
+        else
+            render json: {errors: message.errors.full_messages}, status: 422
+        end
+
         @words = Word.limit(25).order("RANDOM()")
         categories = ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "bomb", "neutral", "neutral", "neutral", "neutral", "neutral", "neutral", "neutral"].shuffle
         @words.each_with_index do |word, index|
