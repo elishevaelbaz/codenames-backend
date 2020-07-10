@@ -10,8 +10,9 @@ class GameWordsController < ApplicationController
         @game_word.update(game_word_params)
 
         game_room = Game.find(@game_word.game_id)
-        GameRoomChannel.broadcast_to(game_room, @game_word)
-        GameRoomChannel.broadcast_to(game_room, game_room)
+        body = {game: game_room, game_word: @game_word}
+        GameRoomChannel.broadcast_to(game_room, body)
+        # GameRoomChannel.broadcast_to(game_room, game_room)
 
         render json: @game_word
     end
