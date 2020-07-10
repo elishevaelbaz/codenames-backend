@@ -6,11 +6,12 @@ class GamesController < ApplicationController
     end
 
     def create
-        @game = Game.create(game_params)
+        @game = Game.new(game_params)
 
         if @game.save
+            # byebug
             game_room = Game.find(@game.id)
-            GameRoomChannel.broadcast_to(game_room, @game)
+            GameRoomChannel.broadcast_to(game_room, title: "test title", body: "test body")
         else
             render json: {errors: message.errors.full_messages}, status: 422
         end
@@ -26,6 +27,9 @@ class GamesController < ApplicationController
     def update
         @game = Game.find(params[:id])
         @game.update(game_params)
+
+        game_room = Game.find(@game.id)
+        GameRoomChannel.broadcast_to(game_room, @game)
 
         render json: @game
     end
