@@ -7,5 +7,7 @@ Rails.application.routes.draw do
 
   get '/games/:room_code', to: 'games#code_lookup', as: 'code_lookup'
   post '/games/:room_code', to: 'games#new_round', as: 'new_round'
+
+  mount ActionCable.server => '/cable'
   
 end
