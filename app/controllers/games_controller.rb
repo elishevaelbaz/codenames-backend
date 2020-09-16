@@ -11,7 +11,7 @@ class GamesController < ApplicationController
         if @game.save
             # byebug
             game_room = Game.find(@game.id)
-            GameRoomChannel.broadcast_to(game_room, title: "test title", body: "test body")
+            GameRoomChannel.broadcast_to(game_room[:room_code], title: "test title", body: "test body")
         else
             render json: {errors: message.errors.full_messages}, status: 422
         end
@@ -29,7 +29,7 @@ class GamesController < ApplicationController
         @game.update(game_params)
 
         game_room = Game.find(@game.id)
-        GameRoomChannel.broadcast_to(game_room, @game)
+        GameRoomChannel.broadcast_to(game_room[:room_code], @game)
 
         render json: @game
     end
@@ -48,13 +48,10 @@ class GamesController < ApplicationController
             GameWord.create(game_id: @game.id, word_id: word.id, category: categories[index], guessed: false)
         end
 
-        # STARTED TO ADD WEBSOCKET BROADCAST TO NEW ROUND, INCOMPLETE
-        # game_room = Game.find(@game.id)
-        # @game_words = GameWord.where(game_id: @game.id)
-        # body = {game: game_room, game_words: @game_words}
-        # GameRoomChannel.broadcast_to(game_room, body)
+        body = {game: GameSerializer.new(@game), type: "new round"}
+        GameRoomChannel.broadcast_to(@game[:room_code], body)
 
-        render json: @game
+        render json: @game # not actually being used, rendering via websocket
     end
 
     def destroy
