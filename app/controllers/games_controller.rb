@@ -9,7 +9,6 @@ class GamesController < ApplicationController
         @game = Game.new(game_params)
 
         if @game.save
-            # byebug
             game_room = Game.find(@game.id)
             GameRoomChannel.broadcast_to(game_room[:room_code], title: "test title", body: "test body")
         else
